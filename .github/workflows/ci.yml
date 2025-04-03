@@ -18,5 +18,5 @@ jobs:
       - name: Build and Push Docker
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t geyasreer/todoapp:${{ env.VERSION }} .
-          docker push geyasreer/todoapp:${{ env.VERSION }}
+          docker build -t geyasreer/todo:${{ env.VERSION }} .
+          docker push geyasreer/todo:${{ env.VERSION }}
