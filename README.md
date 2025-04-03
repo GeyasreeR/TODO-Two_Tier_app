@@ -1,2 +1,2 @@
-# TODO-Two_ier_app
+# TODO-Two_Tier_app
 A simple Todo app developed with flask 
