@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Todo App v0.1</h1>
+        <form method="POST" class="task-form">
+            <input type="text" name="task" placeholder="What’s on your mind?" required>
+            <button type="submit">Add Task</button>
+        </form>
+        <ul class="todo-list">
+            {% for todo in todos %}
+                <li class="todo-item" data-id="{{ todo.id }}">
+                    <input type="checkbox" class="todo-check" {% if todo.completed %}checked{% endif %}>
+                    <span class="todo-text{% if todo.completed %} completed{% endif %}">{{ todo.task }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
