@@ -4,7 +4,7 @@ from app import app
 
 
 # Fixture to set up a test client and temporary database
-@pytest.fixture
+@pytest.fixture(scope="function")
 def client(tmp_path):
     # Use a temporary database file for testing
     db_path = tmp_path / "test_todos.db"

@@ -9,10 +9,12 @@ DATABASE = "todos.db"  # Added for test_app.py compatibility
 
 def init_db():
     conn = sqlite3.connect(DATABASE)
+    conn.execute("DROP TABLE IF EXISTS todos")
     conn.execute(
         "CREATE TABLE IF NOT EXISTS todos "
         "(id INTEGER PRIMARY KEY, task TEXT, completed INTEGER DEFAULT 0)"
     )
+    print(f"Initialized fresh db at {DATABASE}")
     conn.close()
 
 
