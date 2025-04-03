@@ -1,0 +1,22 @@
+name: TodoApp CI/CD
+on:
+  push:
+    branches: [ master ]
+    tags: [ 'v*.*.*' ]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set Version
+        run: |
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+          else
+            echo "VERSION=latest" >> $GITHUB_ENV
+          fi
+      - name: Build and Push Docker
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t geyasreer/todoapp:${{ env.VERSION }} .
+          docker push geyasreer/todoapp:${{ env.VERSION }}
