@@ -1,12 +1,15 @@
 from flask import Flask, request, jsonify, render_template
 import sqlite3
 
+
 app = Flask(__name__)
+
 
 def init_db():
     conn = sqlite3.connect("todos.db")
     conn.execute("CREATE TABLE IF NOT EXISTS todos (id INTEGER PRIMARY KEY, task TEXT, completed INTEGER DEFAULT 0)")
     conn.close()
+
 
 @app.route("/", methods=["GET", "POST"])
 def home():
@@ -25,6 +28,7 @@ def home():
     conn.close()
     return render_template("index.html", todos=todos)
 
+
 @app.route("/todos/<int:todo_id>", methods=["PUT"])
 def update_todo(todo_id):
     completed = request.json.get("completed")
@@ -35,6 +39,7 @@ def update_todo(todo_id):
     conn.close()
     return jsonify({"message": "Updated"}), 200
 
+
 @app.route("/todos", methods=["GET"])
 def get_todos():
     conn = sqlite3.connect("todos.db")
@@ -44,6 +49,8 @@ def get_todos():
     conn.close()
     return jsonify(todos)
 
+
 if __name__ == "__main__":
     init_db()
     app.run(host="0.0.0.0", port=5000)
+
