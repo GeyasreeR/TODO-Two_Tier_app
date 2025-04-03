@@ -1,14 +1,18 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request
+from flask import jsonify, render_template
 import sqlite3
 
 
 app = Flask(__name__)
+DATABASE = "todos.db"  # Added for test_app.py compatibility
 
 
 def init_db():
-    conn = sqlite3.connect("todos.db")
-    conn.execute("CREATE TABLE IF NOT EXISTS todos "
-    "(id INTEGER PRIMARY KEY, task TEXT, completed INTEGER DEFAULT 0)")
+    conn = sqlite3.connect(DATABASE)
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS todos "
+        "(id INTEGER PRIMARY KEY, task TEXT, completed INTEGER DEFAULT 0)"
+    )
     conn.close()
 
 
@@ -17,12 +21,12 @@ def home():
     if request.method == "POST":
         task = request.form.get("task")
         if task:
-            conn = sqlite3.connect("todos.db")
+            conn = sqlite3.connect(DATABASE)
             cursor = conn.cursor()
             cursor.execute("INSERT INTO todos (task) VALUES (?)", (task,))
             conn.commit()
             conn.close()
-    conn = sqlite3.connect("todos.db")
+    conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM todos")
     todos = [{"id": row[0], "task": row[1], "completed": bool(row[2])} for row in cursor.fetchall()]
@@ -33,7 +37,7 @@ def home():
 @app.route("/todos/<int:todo_id>", methods=["PUT"])
 def update_todo(todo_id):
     completed = request.json.get("completed")
-    conn = sqlite3.connect("todos.db")
+    conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     cursor.execute("UPDATE todos SET completed = ? WHERE id = ?", (1 if completed else 0, todo_id))
     conn.commit()
@@ -43,7 +47,7 @@ def update_todo(todo_id):
 
 @app.route("/todos", methods=["GET"])
 def get_todos():
-    conn = sqlite3.connect("todos.db")
+    conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM todos")
     todos = [{"id": row[0], "task": row[1], "completed": bool(row[2])} for row in cursor.fetchall()]
