@@ -11,7 +11,7 @@ def client(tmp_path):
     app.config['DATABASE'] = str(db_path)  # Adjust if your app uses a different config key
     app.config['TESTING'] = True
 
-   # Create the database (assumes app has an init_db function or similar)
+        # Create the database (assumes app has an init_db function or similar)
     with app.app_context():
         # If your app has an init_db function, call it here
         # Example: init_db()
@@ -21,7 +21,6 @@ def client(tmp_path):
     # Yield a test client
     with app.test_client() as client:
         yield client
-
 
     # Cleanup: Remove the temp db after tests
     if os.path.exists(db_path):
@@ -53,7 +52,6 @@ def test_complete_todo(client):
     assert response.status_code == 200
     # Check for completion marker (e.g., CSS class or text)
     assert b'completed' in response.data or b'strikethrough' in response.data  
-
 
 # Test deleting a to-do
 def test_delete_todo(client):
