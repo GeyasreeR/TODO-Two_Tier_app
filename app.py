@@ -7,7 +7,8 @@ app = Flask(__name__)
 
 def init_db():
     conn = sqlite3.connect("todos.db")
-    conn.execute("CREATE TABLE IF NOT EXISTS todos (id INTEGER PRIMARY KEY, task TEXT, completed INTEGER DEFAULT 0)")
+    conn.execute("CREATE TABLE IF NOT EXISTS todos "
+    "(id INTEGER PRIMARY KEY, task TEXT, completed INTEGER DEFAULT 0)")
     conn.close()
 
 
@@ -53,4 +54,3 @@ def get_todos():
 if __name__ == "__main__":
     init_db()
     app.run(host="0.0.0.0", port=5000)
-

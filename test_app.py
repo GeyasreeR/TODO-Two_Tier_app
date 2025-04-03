@@ -11,14 +11,12 @@ def client(tmp_path):
     app.config['DATABASE'] = str(db_path)  # Adjust if your app uses a different config key
     app.config['TESTING'] = True
 
-
-    # Create the database (assumes app has an init_db function or similar)
+   # Create the database (assumes app has an init_db function or similar)
     with app.app_context():
         # If your app has an init_db function, call it here
         # Example: init_db()
         # For now, assuming table creation is handled in app.py on first run
         pass
-
 
     # Yield a test client
     with app.test_client() as client:
@@ -54,7 +52,7 @@ def test_complete_todo(client):
     response = client.post('/complete', data={'id': '1'}, follow_redirects=True)
     assert response.status_code == 200
     # Check for completion marker (e.g., CSS class or text)
-    assert b'completed' in response.data or b'strikethrough' in response.data  # Adjust based on your UI
+    assert b'completed' in response.data or b'strikethrough' in response.data  
 
 
 # Test deleting a to-do
@@ -83,4 +81,3 @@ def test_multiple_todos(client):
     assert response.status_code == 200
     assert b'Task 1' in response.data
     assert b'Task 2' in response.data
-
